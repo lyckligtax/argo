@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	MAGIC_STRING          = "!<arch>\n"
-	TRAILER               = "`\n"
+	MAGIC_STRING = "!<arch>\n"
+	TRAILER      = "`\n"
 	// Lengths in Byte
 	HEADER_LENGTH         = 60
 	HEADER_OBJECT_NAME    = 16

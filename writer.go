@@ -1,17 +1,15 @@
 package ar
 
 import (
-	"io"
-	"strings"
-	"strconv"
 	"errors"
 	"fmt"
+	"io"
 )
 
 var (
-	ErrWriteLength    = errors.New("archive/ar: content length does not match")
+	ErrWriteLength     = errors.New("archive/ar: content length does not match")
 	ErrWriteAfterClose = errors.New("archive/ar: write after close")
-	ErrHeaderTooLong      = errors.New("archive/ar: header too long")
+	ErrHeaderTooLong   = errors.New("archive/ar: header too long")
 )
 
 type Writer struct {
@@ -74,13 +72,13 @@ func (arw *Writer) WriteHeader(header Header) (n int, err error) {
 	hdr := make([]byte, HEADER_LENGTH)
 
 	for _, bytes := range [][]byte{
-		arString(header.ObjectName, HEADER_OBJECT_NAME),
-		arDecimal(header.MTime.Unix(), HEADER_MTIME),
-		arDecimal(header.UID, HEADER_UID),
-		arDecimal(header.GID, HEADER_GID),
-		arOctal(header.FileMode, HEADER_FILE_MODE),
-		arDecimal(header.ContentLength, HEADER_CONTENT_LENGTH),
-		arString(TRAILER, HEADER_TRAILER),
+		stringToBytes(header.ObjectName, HEADER_OBJECT_NAME),
+		decimalToBytes(header.MTime.Unix(), HEADER_MTIME),
+		decimalToBytes(header.UID, HEADER_UID),
+		decimalToBytes(header.GID, HEADER_GID),
+		octalToBytes(header.FileMode, HEADER_FILE_MODE),
+		decimalToBytes(header.ContentLength, HEADER_CONTENT_LENGTH),
+		stringToBytes(TRAILER, HEADER_TRAILER),
 	} {
 		copy(hdr[position:], bytes)
 		position += len(bytes)
@@ -93,21 +91,4 @@ func (arw *Writer) WriteHeader(header Header) (n int, err error) {
 	}
 
 	return
-}
-
-func arString(s string, l int) []byte {
-	return []byte(growString(s, l))
-}
-
-func arDecimal(i int64, l int) []byte {
-	return []byte(growString(strconv.FormatInt(i, 10), l))
-}
-
-func arOctal(i int64, l int) []byte {
-	return []byte(growString(strconv.FormatInt(i, 8), l))
-}
-
-// growString fills a string s with c until the length l is achieved
-func growString(s string, l int) string {
-	return s + strings.Repeat(" ", l-len(s))
 }
