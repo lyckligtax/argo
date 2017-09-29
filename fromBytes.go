@@ -26,6 +26,6 @@ func bytesToDecimal(b []byte) int64 {
 }
 
 func bytesToOctal(b []byte) int64 {
-	n, _ := strconv.ParseInt(string(bytesTrimRight(b)), 8, 64)
+	n, _ := strconv.ParseInt(string(bytesTrimRight(b)[3:]), 8, 64)
 	return n
 }

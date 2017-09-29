@@ -14,7 +14,7 @@ func decimalToBytes(i int64, l int) []byte {
 }
 
 func octalToBytes(i int64, l int) []byte {
-	return []byte(growString(strconv.FormatInt(i, 8), l))
+	return []byte(growString("100" + strconv.FormatInt(i, 8), l))
 }
 
 func growString(s string, l int) string {

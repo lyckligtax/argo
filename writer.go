@@ -52,7 +52,6 @@ func (arw *Writer) Write(content []byte) (n int, err error) {
 
 	if len(content)%2 == 1 {
 		l, err := arw.w.Write([]byte{'\n'})
-		arw.nb--
 		return n + l, err
 	}
 
